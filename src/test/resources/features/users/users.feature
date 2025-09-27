@@ -34,7 +34,8 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | 1     | 1              | 200    |
       | 2     | 2              | 200    |
       | as123 | null           | 400    |
- @Test
+
+
   Scenario: POST /api/v1/users/ will successfully create a user
     * def createUser = read('classpath:/requests/create-user.json')
     * def user = createUser.createUser
@@ -55,7 +56,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
     And match response.creationAt == '#string'
     And match response.updatedAt == '#string'
 
-  @Test
+
   Scenario Outline: Scenario: POST /api/v1/users fails with 400 Bad Request when required fields are missing <expectedResponse>
     * def createUser = read('classpath:/requests/create-user.json')
     * def user = createUser.createUser
@@ -81,7 +82,27 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | test123456 | test123456@email.com | pass3    | test                      | 400    | ["avatar must be a URL address"]                                                                                                          |
 
 
-  #Scenario: POST/api/v1/users/is-available returns available and unavailable users
+  Scenario: POST/api/v1/users/is-available returns unavailable users when passing an existing email
+    * def userAvailability = read('classpath:/requests/create-user.json')
+    * def user = userAvailability.userAvailability
+    * set user.email = userEmail
+    And path '/api/v1/users/is-available'
+    And request user
+    When method post
+    Then status 201
+    And match response.isAvailable == false
+
+
+
+  Scenario: POST/api/v1/users/is-available returns 400 Bad Request when no email is passed
+    * def userAvailability = read('classpath:/requests/create-user.json')
+    * def user = userAvailability.userAvailability
+    * set user.email = null
+    And path '/api/v1/users/is-available'
+    And request user
+    When method post
+    Then status 400
+    And match response.message contains "email must be an email"
 
 
 
