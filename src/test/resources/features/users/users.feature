@@ -4,7 +4,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
   Background: Setup the base URL
     Given url 'https://api.escuelajs.co'
 
-  Scenario: GETapi/v1/users returns a list of users when a limit header is not specified
+  Scenario: GETapi/v1/users returns all users when a limit parameter is not specified
     And path '/api/v1/users'
     When method get
     Then status 200
@@ -18,15 +18,18 @@ Feature: Validate users creation, users updates, fetching users and email availa
     And assert response.length > 1
 
 
-  Scenario: GETapi/v1/users returns a limit of users
+  Scenario Outline: GET /api/v1/users returns only the number of users specified by the limit parameter
     And path '/api/v1/users'
-    And params {limit: 1}
+    And param limit = '<limit>'
     When method get
-    And print response
-    Then status 200
-    And assert response.length <= 1
+    Then status <status>
+    And assert response.length == <responseLength>
 
-
+    Examples:
+      | limit | responseLength | status |
+      | 1     | 1              | 200    |
+      | 2     | 2              | 200    |
+      | as123 | null           | 400    |
 
 
 
