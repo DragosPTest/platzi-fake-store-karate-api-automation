@@ -45,11 +45,11 @@ Feature: Validate users creation, users updates, fetching users and email availa
     And request user
     When method post
     Then status 201
-    And print response
     And match response.id != null
     And match response.name == userName
     And match response.email == userEmail
     And match response.avatar == avatar
+    And match response.role == 'customer'
     And match response.creationAt == '#string'
     And match response.updatedAt == '#string'
 
@@ -60,11 +60,9 @@ Feature: Validate users creation, users updates, fetching users and email availa
     * set user.email = "<email>"
     * set user.password = "<password>"
     * set user.avatar = "<avatar>"
-    * print 'Request Body being sent', user
     And path '/api/v1/users/'
     And request user
     When method post
-    And print response
     Then status <status>
     And match response.message contains any <expectedResponse>
 
@@ -80,6 +78,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | test123456 | test123456@email.com | pass3    | test                      | 400    | ["avatar must be a URL address"]                                                                                                          |
 
 
+    Scenario: PUT/api/v1/users/1 will update users details (email, pass, name, )
 
 
 
