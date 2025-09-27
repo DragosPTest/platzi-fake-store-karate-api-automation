@@ -34,13 +34,15 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | 1     | 1              | 200    |
       | 2     | 2              | 200    |
       | as123 | null           | 400    |
-
+ @Test
   Scenario: POST /api/v1/users/ will successfully create a user
-    * def user = read('classpath:/requests/create-user.json')
+    * def createUser = read('classpath:/requests/create-user.json')
+    * def user = createUser.createUser
     * set user.name = userName
     * set user.email = userEmail
     * set user.password = password
     * set user.avatar = avatar
+    And print "request body ", user
     And path '/api/v1/users/'
     And request user
     When method post
@@ -53,9 +55,10 @@ Feature: Validate users creation, users updates, fetching users and email availa
     And match response.creationAt == '#string'
     And match response.updatedAt == '#string'
 
-
+  @Test
   Scenario Outline: Scenario: POST /api/v1/users fails with 400 Bad Request when required fields are missing <expectedResponse>
-    * def user = read('classpath:/requests/create-user.json')
+    * def createUser = read('classpath:/requests/create-user.json')
+    * def user = createUser.createUser
     * set user.name = "<name>"
     * set user.email = "<email>"
     * set user.password = "<password>"
@@ -73,12 +76,15 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | test1234   | test                 | pass2    | https://picsum.photos/800 | 400    | ["email must be an email"]                                                                                                                |
       | test12345  | test12345@email.com  |          | https://picsum.photos/800 | 400    | ["password must be longer than or equal to 4 characters","password should not be empty","password must contain only letters and numbers"] |
       | test12345  | test12345@email.com  | 123      | https://picsum.photos/800 | 400    | ["password must be longer than or equal to 4 characters"]                                                                                 |
-      | test12345  | test12345@email.com  | ####     | https://picsum.photos/800 | 400    | ["password must contain only letters and numbers"]                                                                                 |
+      | test12345  | test12345@email.com  | ####     | https://picsum.photos/800 | 400    | ["password must contain only letters and numbers"]                                                                                        |
       | test123456 | test123456@email.com | pass3    |                           | 400    | ["avatar should not be empty","avatar must be a URL address"]                                                                             |
       | test123456 | test123456@email.com | pass3    | test                      | 400    | ["avatar must be a URL address"]                                                                                                          |
 
 
-    Scenario: PUT/api/v1/users/1 will update users details (email, pass, name, )
+  #Scenario: POST/api/v1/users/is-available returns available and unavailable users
+
+
+
 
 
 

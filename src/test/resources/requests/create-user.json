@@ -1,7 +1,11 @@
 {
-  "name": "",
-  "email": "",
-  "password": "",
-  "avatar": "https://picsum.photos/800"
+  "createUser": {
+    "name": "defaultName",
+    "email": "default@email.com",
+    "password": "defaultPass",
+    "avatar": "https://picsum.photos/800"
+  },
+  "userAvailability": {
+    "email": ""
+  }
 }
-
