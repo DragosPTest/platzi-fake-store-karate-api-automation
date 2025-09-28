@@ -1,4 +1,4 @@
-@usersfeature @regression
+@regression
 Feature: Validate users creation, users updates, fetching users and email availability of users
 
 
@@ -144,7 +144,6 @@ Feature: Validate users creation, users updates, fetching users and email availa
     # Update the user
     Given path '/api/v1/users/' + userId
     And request updateUserRole
-    * print "User Update Request: ", updateUserRole
     When method put
     Then status <status>
     And match response.message  == <expectedResponse>

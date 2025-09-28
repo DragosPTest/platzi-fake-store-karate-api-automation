@@ -7,9 +7,9 @@ public class testRunner {
     @Karate.Test
     public Karate mainRunner()
     {
-        Runner.path("classpath:features/users.feature")
-                .tags("@regression");
+        Runner.path("classpath:features/auth.feature")
+                .tags("@Test");
                 //.parallel(5);
-                return Karate.run("classpath:features/users/users.feature").tags("@regression", "@usersfeature");
+                return Karate.run("classpath:features/auth/auth.feature").tags("@Test");
     }
 }
