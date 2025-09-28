@@ -7,5 +7,15 @@
   },
   "userAvailability": {
     "email": ""
+  },
+  "updateUser": {
+    "email": "testUpdated@email.com",
+    "name": "updatedName",
+    "password": "updatedPass",
+    "role": "admin",
+    "avatar": "https://picsum.photosUpdated/800"
+  },
+  "updateUserRole": {
+    "role": ""
   }
 }

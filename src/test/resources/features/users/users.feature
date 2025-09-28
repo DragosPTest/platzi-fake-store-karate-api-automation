@@ -1,3 +1,4 @@
+@usersfeature @regression
 Feature: Validate users creation, users updates, fetching users and email availability of users
 
 
@@ -7,9 +8,9 @@ Feature: Validate users creation, users updates, fetching users and email availa
     * def userEmail = 'testemail@example.com'
     * def password = 'testpass123'
     * def avatar = 'https://picsum.photos/800'
-
+  @get @users @positive @smoke
   Scenario: GETapi/v1/users returns all users when a limit parameter is not specified
-    And path '/api/v1/users'
+    Given path '/api/v1/users'
     When method get
     Then status 200
     And match response != null
@@ -21,9 +22,9 @@ Feature: Validate users creation, users updates, fetching users and email availa
     And match response[0].updatedAt == '#string'
     And assert response.length > 1
 
-
+  @get @users @positive @negative
   Scenario Outline: GET /api/v1/users returns only the number of users specified by the limit parameter
-    And path '/api/v1/users'
+    Given path '/api/v1/users'
     And param limit = '<limit>'
     When method get
     Then status <status>
@@ -35,7 +36,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | 2     | 2              | 200    |
       | as123 | null           | 400    |
 
-
+  @create @users @positive @smoke
   Scenario: POST /api/v1/users/ will successfully create a user
     * def createUser = read('classpath:/requests/create-user.json')
     * def user = createUser.createUser
@@ -44,7 +45,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
     * set user.password = password
     * set user.avatar = avatar
     And print "request body ", user
-    And path '/api/v1/users/'
+    Given path '/api/v1/users/'
     And request user
     When method post
     Then status 201
@@ -56,7 +57,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
     And match response.creationAt == '#string'
     And match response.updatedAt == '#string'
 
-
+  @create @users @negative
   Scenario Outline: Scenario: POST /api/v1/users fails with 400 Bad Request when required fields are missing <expectedResponse>
     * def createUser = read('classpath:/requests/create-user.json')
     * def user = createUser.createUser
@@ -64,7 +65,7 @@ Feature: Validate users creation, users updates, fetching users and email availa
     * set user.email = "<email>"
     * set user.password = "<password>"
     * set user.avatar = "<avatar>"
-    And path '/api/v1/users/'
+    Given path '/api/v1/users/'
     And request user
     When method post
     Then status <status>
@@ -81,28 +82,77 @@ Feature: Validate users creation, users updates, fetching users and email availa
       | test123456 | test123456@email.com | pass3    |                           | 400    | ["avatar should not be empty","avatar must be a URL address"]                                                                             |
       | test123456 | test123456@email.com | pass3    | test                      | 400    | ["avatar must be a URL address"]                                                                                                          |
 
-
+  @availability @users @positive @smoke
   Scenario: POST/api/v1/users/is-available returns unavailable users when passing an existing email
     * def userAvailability = read('classpath:/requests/create-user.json')
     * def user = userAvailability.userAvailability
     * set user.email = userEmail
-    And path '/api/v1/users/is-available'
+    Given path '/api/v1/users/is-available'
     And request user
     When method post
     Then status 201
     And match response.isAvailable == false
 
-
-
+  @availability @users @negative
   Scenario: POST/api/v1/users/is-available returns 400 Bad Request when no email is passed
     * def userAvailability = read('classpath:/requests/create-user.json')
     * def user = userAvailability.userAvailability
     * set user.email = null
-    And path '/api/v1/users/is-available'
+    Given path '/api/v1/users/is-available'
     And request user
     When method post
     Then status 400
     And match response.message contains "email must be an email"
+
+  @update @users @positive @smoke
+  Scenario: PUT /api/v1/users/ will update the user information
+    * def payloads = read('classpath:/requests/create-user.json')
+    * def createUser = payloads.createUser
+    * def updateUser = payloads.updateUser
+
+  # Create the user
+    Given path '/api/v1/users/'
+    And request createUser
+    When method post
+    Then status 201
+    * def userId = response.id
+  # Update the user
+    Given path '/api/v1/users/' + userId
+    And request updateUser
+    When method put
+    Then status 200
+  # Assert the updated fields
+    And match response.name == updateUser.name
+    And match response.email == updateUser.email
+    And match response.password == updateUser.password
+    And match response.avatar == updateUser.avatar
+    And match response.role == updateUser.role
+
+  @update @users @negative
+  Scenario Outline: PUT /api/v1/users/ returns 400BadRequest when the role is not either 'admin' or 'customer'
+    * def payloads = read('classpath:/requests/create-user.json')
+    * def createUser = payloads.createUser
+    * def updateUserRole = payloads.updateUserRole
+    * set updateUserRole.role = "<role>"
+    # Create the user
+    Given path '/api/v1/users/'
+    And request createUser
+    When method post
+    Then status 201
+    * def userId = response.id
+
+    # Update the user
+    Given path '/api/v1/users/' + userId
+    And request updateUserRole
+    * print "User Update Request: ", updateUserRole
+    When method put
+    Then status <status>
+    And match response.message  == <expectedResponse>
+    Examples:
+      | role    | status | expectedResponse                                              |
+      | abcd123 | 400    | ["role must be one of the following values: admin, customer"] |
+      |         | 400    | ["role must be one of the following values: admin, customer"] |
+
 
 
 
