@@ -1,8 +1,8 @@
 {
   "createUser": {
-    "name": "defaultName",
-    "email": "default@email.com",
-    "password": "defaultPass",
+    "name": "defaultNameBuggyasd",
+    "email": "defaultasda@email.com",
+    "password": "defaultPass1234",
     "avatar": "https://picsum.photos/800"
   },
   "userAvailability": {
