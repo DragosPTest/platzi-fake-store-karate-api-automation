@@ -8,8 +8,8 @@ public class testRunner {
     public Karate mainRunner()
     {
         Runner.path("classpath:features/auth.feature")
-                .tags("@Test");
+                .tags("@regression");
                 //.parallel(5);
-                return Karate.run("classpath:features/auth/auth.feature").tags("@Test");
+                return Karate.run("classpath:features/auth/auth.feature").tags("@regression");
     }
 }
