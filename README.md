@@ -13,10 +13,10 @@ API test suits using Karate.
 To execute the full suite - run the testRunner with @regression tag.
 
 ## Prerequisites
-Java 11
-Maven 
-Karate
-IntelliJ IDEA (or any IDE with Maven support)
+- Java 11
+- Maven 
+- Karate
+- IntelliJ IDEA (or any IDE with Maven support)
 
 ## Project structure
 * features/ – Contains all Karate feature files
@@ -33,3 +33,8 @@ IntelliJ IDEA (or any IDE with Maven support)
 - @login - Authentication scenarios
 - @negative - Different edge case failure paths
 - @smoke - Core endpoints check
+
+## Next steps
+- Add integration with Jenkins
+- Expand coverage to other functionalities e.g. products, categories, locations
+- With time enhance the code logic for easier readability and maintainability
