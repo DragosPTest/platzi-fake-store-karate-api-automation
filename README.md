@@ -3,7 +3,7 @@
 ## Overview:
 **This project is a Karate-DSL API Automation framework, built to validate 
 core endpoints and core logic of the Platzi Fake Store API. It covers users and 
-products with both happy paths and negative scenarios.**
+authentication with both happy paths and negative scenarios.**
 
 ## Purpose:
 Created this project to demonstrate my ability to design, implement and maintain
@@ -21,7 +21,6 @@ IntelliJ IDEA (or any IDE with Maven support)
 ## Project structure
 * features/ – Contains all Karate feature files
 * users/ – User-related scenarios
-* products/ – Product-related scenarios
 * auth/ – Authentication and profile tests
 * requests/ – JSON payloads used in API requests
 * utils/ – Reusable helper features (e.g. user creation)
