@@ -90,8 +90,18 @@ Feature: Validate user logins, retrieving users profiles and access token refres
   @login @token @negative @Test
   Scenario: POST https://api.escuelajs.co/api/v1/auth/refresh-token will successfully refresh a token
     * def userInfo = call read('classpath:utils/create-user-helper.feature')
+    * print "Create User ", userInfo
     * def loginTokens = call read('classpath:utils/login-user-helper.feature')
-    * print "Tokens ", loginTokens
+    * print "Login the User ", loginTokens
+    * def refreshTokenRequest = read('classpath:requests/refresh-token.json')
+    * set refreshTokenRequest.refreshToken = loginTokens.refreshToken
+    Given path '/api/v1/auth/refresh-token'
+    And request refreshTokenRequest
+    When method post
+    Then status 201
+    And match response.refresh_token != refreshTokenRequest
+
+
 
 
 
