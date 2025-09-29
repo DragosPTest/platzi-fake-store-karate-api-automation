@@ -1,15 +1,18 @@
 package runners;
 
+import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
-import com.intuit.karate.junit5.Karate;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 public class testRunner {
-    @Karate.Test
-    public Karate mainRunner()
-    {
-        Runner.path("classpath:features/auth.feature")
-                .tags("@regression");
-                //.parallel(5);
-                return Karate.run("classpath:features/auth/auth.feature").tags("@regression");
+    @Test
+    void testParallel() {
+        Results results = Runner.path("classpath:features/auth/auth.feature", "classpath:features/users/users.feature").tags("@regression").parallel(5);
+        assertEquals(0, results.getFailCount(), results.getErrorMessages());
+        System.out.println("Running features from: " + new File("src/test/resources/features").getAbsolutePath());
+
     }
 }

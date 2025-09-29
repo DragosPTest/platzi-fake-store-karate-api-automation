@@ -10,7 +10,7 @@ Created this project to demonstrate my ability to design, implement and maintain
 API test suits using Karate.
 
 ## How to Run
-To execute the full suite - run the testRunner with @regression tag.
+To execute the full suite run - `mvn test -Dtest=testRunner`
 
 ## Prerequisites
 - Java 11
