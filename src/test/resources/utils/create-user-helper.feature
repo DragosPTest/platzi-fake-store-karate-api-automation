@@ -9,10 +9,10 @@ Feature: Create a user
     * set createUser.name = 'User_' + uuid
     * set createUser.email = 'user_' + uuid + '@test.com'
 
-    Given path '/api/v1/users/'
-    And request createUser
-    When method post
-    Then status 201
+    * path '/api/v1/users/'
+    * request createUser
+    * method post
+    * status 201
 
     * def id = response.id
     * def name = response.name

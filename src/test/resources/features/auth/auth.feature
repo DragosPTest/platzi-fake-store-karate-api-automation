@@ -66,7 +66,7 @@ Feature: Validate user logins, retrieving users profiles and access token refres
     And match response.role == userInfo.role
     And match response.avatar == userInfo.avatar
 
-  @login @token @negative @Test
+  @login @token @negative
   Scenario Outline: GET https://api.escuelajs.co/api/v1/auth/profile returns 401Unauthorized for invalid and missing tokens
     * def userInfo = call read('classpath:utils/create-user-helper.feature')
     * def authUser = read('classpath:/requests/user-login.json').authUser
@@ -87,8 +87,11 @@ Feature: Validate user logins, retrieving users profiles and access token refres
       | 'Bearer ' + accessToken | 401    | {"message":"Unauthorized","statusCode":401} |
       | null                    | 401    | {"message":"Unauthorized","statusCode":401} |
 
-
-
+  @login @token @negative @Test
+  Scenario: POST https://api.escuelajs.co/api/v1/auth/refresh-token will successfully refresh a token
+    * def userInfo = call read('classpath:utils/create-user-helper.feature')
+    * def loginTokens = call read('classpath:utils/login-user-helper.feature')
+    * print "Tokens ", loginTokens
 
 
 
