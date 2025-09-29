@@ -87,7 +87,7 @@ Feature: Validate user logins, retrieving users profiles and access token refres
       | 'Bearer ' + accessToken | 401    | {"message":"Unauthorized","statusCode":401} |
       | null                    | 401    | {"message":"Unauthorized","statusCode":401} |
 
-  @login @token @negative @Test
+  @refresh @token @positive
   Scenario: POST https://api.escuelajs.co/api/v1/auth/refresh-token will successfully refresh a token
     * def userInfo = call read('classpath:utils/create-user-helper.feature')
     * print "Create User ", userInfo
