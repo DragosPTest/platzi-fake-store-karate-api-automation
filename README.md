@@ -13,7 +13,7 @@ API test suits using Karate.
 To execute the full suite run - `mvn test -Dtest=testRunner`
 
 ## Prerequisites
-- Java 11
+- Java 21.0.1
 - Maven 
 - Karate
 - IntelliJ IDEA (or any IDE with Maven support)
