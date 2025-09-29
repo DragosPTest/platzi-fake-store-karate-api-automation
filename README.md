@@ -34,6 +34,9 @@ To execute the full suite run - `mvn test -Dtest=testRunner`
 - @negative - Different edge case failure paths
 - @smoke - Core endpoints check
 
+## Test execution
+![Test Results](assets/tests-results.png)
+
 ## Next steps
 - Add integration with Jenkins
 - Expand coverage to other functionalities e.g. products, categories, locations
