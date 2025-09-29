@@ -47,19 +47,14 @@ Feature: Validate user logins, retrieving users profiles and access token refres
   @login @token @positive
   Scenario: GET https://api.escuelajs.co/api/v1/auth/profile retrieves user profile
     * def userInfo = call read('classpath:utils/create-user-helper.feature')
-  # Authenticate the user and get the token
     * def authUser = read('classpath:/requests/user-login.json').authUser
     * set authUser.email = userInfo.email
     * set authUser.password = userInfo.password
-    * print "User Info ", userInfo
-    * print "User Auth: ", authUser
     Given path '/api/v1/auth/login'
     And request authUser
     When method post
     Then status 201
     * def accessToken = response.access_token
-    * print "Access Token Value: ", accessToken
-  # Retrieve user information
     Given path '/api/v1/auth/profile'
     And header Authorization = 'Bearer ' + accessToken
     When method get
@@ -71,6 +66,21 @@ Feature: Validate user logins, retrieving users profiles and access token refres
     And match response.role == userInfo.role
     And match response.avatar == userInfo.avatar
 
+  @login @token @negative
+  Scenario: GET https://api.escuelajs.co/api/v1/auth/profile returns 401Unauthorized for invalid tokens
+    * def userInfo = call read('classpath:utils/create-user-helper.feature')
+    * def authUser = read('classpath:/requests/user-login.json').authUser
+    * set authUser.email = userInfo.email
+    * set authUser.password = userInfo.password
+    Given path '/api/v1/auth/login'
+    And request authUser
+    When method post
+    Then status 201
+    * def accessToken = response.access_token + 'invalid'
+    Given path '/api/v1/auth/profile'
+    And header Authorization = 'Bearer ' + accessToken
+    When method get
+    Then status 401
 
 
 
