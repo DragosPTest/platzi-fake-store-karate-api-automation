@@ -3,7 +3,7 @@ Feature: Login a user
   Background:
     Given url 'https://api.escuelajs.co'
 
-  Scenario:
+  Scenario: Login a user - helper
     * def authUser = read('classpath:/requests/user-login.json').authUser
     * set authUser.email = userInfo.email
     * set authUser.password = userInfo.password
