@@ -7,6 +7,7 @@
     <list default="true" id="3555ba00-cf16-47b5-a88c-14b37afd75f5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/resources/features/auth/auth.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/features/auth/auth.feature" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/utils/login-user-helper.feature" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/utils/login-user-helper.feature" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +52,7 @@
       <recent name="C:\Users\Dragos\Desktop\automation-framework\platzi-fake-store-karate-api-automation\src\test\resources\features\users" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.scenarioTestRunner">
+  <component name="RunManager" selected="JUnit.scenarioRunner">
     <configuration name="Feature: login-user-helper" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java" temporary="true" nameIsGenerated="true">
       <option name="CUCUMBER_CORE_VERSION" value="1.2" />
       <option name="FILE_PATH" value="$PROJECT_DIR$/src/test/resources/utils/login-user-helper.feature" />
@@ -90,6 +91,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="scenarioRunner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="platzi-fake-store-karate-api-automation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="runners.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="runners" />
+      <option name="MAIN_CLASS_NAME" value="runners.scenarioRunner" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="scenarioTestRunner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="platzi-fake-store-karate-api-automation" />
       <extension name="coverage">
@@ -122,6 +138,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.scenarioRunner" />
         <item itemvalue="JUnit.scenarioTestRunner" />
         <item itemvalue="Cucumber Java.Feature: login-user-helper" />
         <item itemvalue="JUnit.testRunner" />
