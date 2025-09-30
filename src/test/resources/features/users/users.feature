@@ -44,7 +44,6 @@ Feature: Validate users creation, users updates, fetching users and email availa
     * set user.email = userEmail
     * set user.password = password
     * set user.avatar = avatar
-    And print "request body ", user
     Given path '/api/v1/users/'
     And request user
     When method post

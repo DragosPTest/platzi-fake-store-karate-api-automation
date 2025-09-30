@@ -121,11 +121,10 @@ Feature: Validate user logins, retrieving users profiles and access token refres
     * set refreshTokenRequest.refreshToken = ""
     Given path '/api/v1/auth/refresh-token'
     And request refreshTokenRequest
-    * print "Request Body ", refreshTokenRequest
     When method post
     Then status 400
     And match response == { message: ['refreshToken should not be empty'], error: 'Bad Request', statusCode: 400 }
-    * print response
+
 
 
 
