@@ -112,7 +112,7 @@ Feature: Validate user logins, retrieving users profiles and access token refres
     Then status 401
     And match response == {message: 'Invalid', error: 'Unauthorized', statusCode: 401}
 
-  @Test
+  @auth @token @negative
   Scenario: POST /auth/refresh-token returns 400BadRequest for empty refresh tokens
     * def userInfo = call read('classpath:utils/create-user-helper.feature')
     * def loginTokens = call read('classpath:utils/login-user-helper.feature')
