@@ -15,11 +15,14 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
 
   @get @products @positive @smoke
   Scenario: GET https://api.escuelajs.co/api/v1/products/ returns a single product when an 'id' is passed as a path parameter
-    * def id = 7
+    Given path '/api/v1/products'
+    When method get
+    Then status 200
+    * def responseId =  response[0].id
     * def products = read('classpath:schemas/products-schema.json')
     * def productSchema = products.productsSchema
-    * set productSchema.id = id
-    Given path 'api', 'v1', 'products', id
+    * set productSchema.id = responseId
+    Given path 'api', 'v1', 'products', responseId
     When method get
     Then status 200
     And match response == productSchema
