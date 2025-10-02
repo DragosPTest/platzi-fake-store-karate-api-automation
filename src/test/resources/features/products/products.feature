@@ -13,7 +13,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     And match response[0] == productsSchema
 
 
-  @get @products @positive @smoke @Test
+  @get @products @positive @smoke
   Scenario: GET https://api.escuelajs.co/api/v1/products/ returns a single product when an 'id' is passed as a path parameter
     * def id = 7
     * def products = read('classpath:schemas/products-schema.json')
@@ -24,9 +24,23 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     Then status 200
     And match response == productSchema
 
+  @get @products @negative @smoke
+  Scenario Outline: GET https://api.escuelajs.co/api/v1/products/ returns 400BadRequest for invalid or non-existent product IDs <id>
+    Given path 'api', 'v1', 'products', '<id>'
+    When method get
+    Then status <status>
+    And match response.message contains <expectedMessage>
+    * print "Message:", response
 
 
-  Scenario: GET https://api.escuelajs.co/api/v1/products/ returns 400BadRequest for invalid parameters
+    Examples:
+      | id     | expectedMessage                                  | status |
+      | -1     | "Could not find any entity"                      | 400    |
+      | 0      | "Could not find any entity"                      | 400    |
+      | a23#   | "Validation failed (numeric string is expected)" | 400    |
+      | 999999 | "Could not find any entity"                      | 400    |
+
+
 
 
 
