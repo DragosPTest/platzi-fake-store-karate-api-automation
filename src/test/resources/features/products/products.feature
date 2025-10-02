@@ -30,8 +30,6 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     When method get
     Then status <status>
     And match response.message contains <expectedMessage>
-    * print "Message:", response
-
 
     Examples:
       | id     | expectedMessage                                  | status |
