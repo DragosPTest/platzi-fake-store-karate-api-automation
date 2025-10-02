@@ -24,7 +24,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     Then status 200
     And match response == productSchema
 
-  @get @products @negative @smoke
+  @get @products @negative
   Scenario Outline: GET https://api.escuelajs.co/api/v1/products/ returns 400BadRequest for invalid or non-existent product IDs <id>
     Given path 'api', 'v1', 'products', '<id>'
     When method get
