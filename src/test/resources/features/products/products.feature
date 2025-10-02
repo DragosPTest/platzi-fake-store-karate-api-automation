@@ -6,20 +6,28 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
 
   @get @products @positive @smoke
   Scenario: GET https://api.escuelajs.co/api/v1/products returns a list of products
-    * def productSchema = { id: '#number', title: '#string', slug: '#string', price: '#number', description: '#string', category: { id: '#number', name: '#string', slug: '#string', image: '#string', creationAt: '#string', updatedAt: '#string' }, images: '#[] #string', creationAt: '#string', updatedAt: '#string' }
+    * def productsSchema = read('classpath:schemas/products-schema.json').productsSchema
     Given path '/api/v1/products'
     When method get
     Then status 200
-    And match response[0] == productSchema
+    And match response[0] == productsSchema
 
-  @Test
-  Scenario: GET https://api.escuelajs.co/api/v1/products/ returns  asingle product when an id is passed as a path param
+
+  @get @products @positive @smoke @Test
+  Scenario: GET https://api.escuelajs.co/api/v1/products/ returns a single product when an 'id' is passed as a path parameter
     * def id = 7
-    * def productSchema = { id: '#(id)', title: '#string', slug: '#string', price: '#number', description: '#string', category: { id: '#number', name: '#string', slug: '#string', image: '#string', creationAt: '#string', updatedAt: '#string' }, images: '#[] #string', creationAt: '#string', updatedAt: '#string' }
+    * def products = read('classpath:schemas/products-schema.json')
+    * def productSchema = products.productsSchema
+    * set productSchema.id = id
     Given path 'api', 'v1', 'products', id
     When method get
     Then status 200
     And match response == productSchema
+
+
+
+  Scenario: GET https://api.escuelajs.co/api/v1/products/ returns 400BadRequest for invalid parameters
+
 
 
 
