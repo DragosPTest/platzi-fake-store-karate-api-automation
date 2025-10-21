@@ -41,6 +41,29 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
       | a23#   | "Validation failed (numeric string is expected)" | 400    |
       | 999999 | "Could not find any entity"                      | 400    |
 
+  @get @products @positive @smoke
+  Scenario: GET https://api.escuelajs.co/api/v1/products/slug/ returns a single product by slug
+    * def products = read('classpath:schemas/products-schema.json')
+    * def productSchema = products.productsSchema
+    Given path 'api', 'v1', 'products', 'slug', 'classic-black-hooded-sweatshirt'
+    When method get
+    Then status 200
+    And match response == productSchema
+    And match response.slug == "classic-black-hooded-sweatshirt"
+
+  @test
+  Scenario Outline: GET https://api.escuelajs.co/api/v1/products/slug/ returns 400BadRequest for invalid or non-existing product slugs <slug>
+    Given path 'api', 'v1', 'products', 'slug', '<slug>'
+    When method get
+    Then status <status>
+    And match response.message contains <expectedMessage>
+
+    Examples:
+      | slug | expectedMessage                                  | status |
+      |      | "Validation failed (numeric string is expected)" | 400    |
+      | asd1 | "Could not find any entity of type"              | 400    |
+
+
 
 
 
