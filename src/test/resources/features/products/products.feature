@@ -51,7 +51,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     And match response == productSchema
     And match response.slug == "classic-black-hooded-sweatshirt"
 
-  @test
+  @get @products @negative
   Scenario Outline: GET https://api.escuelajs.co/api/v1/products/slug/ returns 400BadRequest for invalid or non-existing product slugs <slug>
     Given path 'api', 'v1', 'products', 'slug', '<slug>'
     When method get
@@ -62,6 +62,28 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
       | slug | expectedMessage                                  | status |
       |      | "Validation failed (numeric string is expected)" | 400    |
       | asd1 | "Could not find any entity of type"              | 400    |
+
+  @create @product @positive @smoke @test
+  Scenario: POST https://api.escuelajs.co/api/v1/products/ successfully creates a product
+    * def createProduct = read('classpath:/requests/create-product.json').createProduct
+    * def uuid = java.util.UUID.randomUUID() + ''
+    * def products = read('classpath:schemas/products-schema.json')
+    * def productSchema = products.productsSchema
+    * set createProduct.title = 'Product_' + uuid
+    * set createProduct.description = 'Description_' + uuid
+    Given path '/api/v1/products/'
+    And request createProduct
+    When method post
+    Then status 201
+    And match response == productSchema
+    And match response.title == createProduct.title
+    And match response.description == createProduct.description
+    And match response.price == createProduct.price
+    And match response.category.id == createProduct.categoryId
+    And match response.images == createProduct.images
+
+
+
 
 
 

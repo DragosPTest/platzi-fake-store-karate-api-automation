@@ -1,0 +1,11 @@
+{
+  "createProduct": {
+    "title": "New Product 3",
+    "price": 10,
+    "description": "A description",
+    "categoryId": 21,
+    "images": [
+      "https://placehold.co/600x400"
+    ]
+  }
+}
