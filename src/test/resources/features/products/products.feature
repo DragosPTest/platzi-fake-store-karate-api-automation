@@ -63,7 +63,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
       |      | "Validation failed (numeric string is expected)" | 400    |
       | asd1 | "Could not find any entity of type"              | 400    |
 
-  @create @product @positive @smoke @test
+  @create @product @positive @smoke
   Scenario: POST https://api.escuelajs.co/api/v1/products/ successfully creates a product
     * def createProduct = read('classpath:/requests/create-product.json').createProduct
     * def uuid = java.util.UUID.randomUUID() + ''
