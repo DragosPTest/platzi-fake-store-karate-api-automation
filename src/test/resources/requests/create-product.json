@@ -3,7 +3,7 @@
     "title": "New Product 3",
     "price": 10,
     "description": "A description",
-    "categoryId": 21,
+    "categoryId": 1,
     "images": [
       "https://placehold.co/600x400"
     ]

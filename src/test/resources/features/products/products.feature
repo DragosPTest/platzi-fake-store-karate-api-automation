@@ -82,6 +82,37 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     And match response.category.id == createProduct.categoryId
     And match response.images == createProduct.images
 
+  @test
+  Scenario Outline: POST https://api.escuelajs.co/api/v1/products/ returns 400BadRequest for invalid requests <expectedMessage>
+    * def createProduct = read('classpath:/requests/create-product.json')
+    * def product = createProduct.createProduct
+    * set product.title = "<title>"
+    * set product.price = <price>
+    * set product.description = "<description>"
+    * set product.categoryId = "<categoryId>"
+    * set product.images = ["<images>"]
+    Given path '/api/v1/products/'
+    And request product
+    When method post
+    Then status <status>
+    And match response.message contains any <expectedMessage>
+
+    Examples:
+      | title         | price   | description      | categoryId | images                       | status | expectedMessage                                                          |
+      |               | 10      | Test Description | 1          | https://placehold.co/600x400 | 400    | ["title should not be empty"]                                            |
+      | Test Title 3  | null    | Test Description | 1          | https://placehold.co/600x400 | 400    | ["price should not be empty", "price must be a positive number" ]        |
+      | Test Title 4  | -1      | Test Description | 1          | https://placehold.co/600x400 | 400    | ["price must be a positive number" ]                                     |
+      | Test Title 5  | 0       | Test Description | 1          | https://placehold.co/600x400 | 400    | ["price must be a positive number" ]                                     |
+      | Test Title 5  | "price" | Test Description | 1          | https://placehold.co/600x400 | 400    | ["price must be a positive number" ]                                     |
+      | Test Title 6  | 10      |                  | 1          | https://placehold.co/600x400 | 400    | ["description should not be empty" ]                                     |
+      | Test Title 7  | 10      | Test Description | null       | https://placehold.co/600x400 | 400    | ["categoryId must be a number conforming to the specified constraints" ] |
+      | Test Title 8  | 10      | Test Description | -1         | https://placehold.co/600x400 | 400    | "Could not find any entity of type"                                      |
+      | Test Title 9  | 10      | Test Description | 0          | https://placehold.co/600x400 | 400    | "Could not find any entity of type"                                      |
+      | Test Title 10 | 10      | Test Description | 1          |                              | 400    | ["each value in images must be a URL address" ]                          |
+      | Test Title 10 | 10      | Test Description | 1          | ["10asdfas#$"]               | 400    | ["each value in images must be a URL address" ]                          |
+
+
+
 
 
 
