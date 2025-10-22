@@ -82,7 +82,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     And match response.category.id == createProduct.categoryId
     And match response.images == createProduct.images
 
-  @test
+  @create @products @negative
   Scenario Outline: POST https://api.escuelajs.co/api/v1/products/ returns 400BadRequest for invalid requests <expectedMessage>
     * def createProduct = read('classpath:/requests/create-product.json')
     * def product = createProduct.createProduct
