@@ -1,0 +1,11 @@
+{
+  "updateProduct": {
+    "title": "Change title asdada",
+    "price": 101,
+    "description": "Updated description",
+    "categoryId": 1,
+    "images": [
+      "https://placehold.co/600x400Updated"
+    ]
+  }
+}

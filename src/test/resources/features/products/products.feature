@@ -7,6 +7,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
   @get @products @positive @smoke
   Scenario: GET https://api.escuelajs.co/api/v1/products returns a list of products
     * def productsSchema = read('classpath:schemas/products-schema.json').productsSchema
+
     Given path '/api/v1/products'
     When method get
     Then status 200
@@ -18,10 +19,12 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     Given path '/api/v1/products'
     When method get
     Then status 200
+
     * def responseId =  response[0].id
     * def products = read('classpath:schemas/products-schema.json')
     * def productSchema = products.productsSchema
     * set productSchema.id = responseId
+
     Given path 'api', 'v1', 'products', responseId
     When method get
     Then status 200
@@ -45,6 +48,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
   Scenario: GET https://api.escuelajs.co/api/v1/products/slug/ returns a single product by slug
     * def products = read('classpath:schemas/products-schema.json')
     * def productSchema = products.productsSchema
+
     Given path 'api', 'v1', 'products', 'slug', 'classic-black-hooded-sweatshirt'
     When method get
     Then status 200
@@ -71,6 +75,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     * def productSchema = products.productsSchema
     * set createProduct.title = 'Product_' + uuid
     * set createProduct.description = 'Description_' + uuid
+
     Given path '/api/v1/products/'
     And request createProduct
     When method post
@@ -91,6 +96,7 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
     * set product.description = "<description>"
     * set product.categoryId = "<categoryId>"
     * set product.images = ["<images>"]
+
     Given path '/api/v1/products/'
     And request product
     When method post
@@ -110,6 +116,26 @@ Feature: Validate product listing, retrieval by ID and slug, and pagination
       | Test Title 9  | 10      | Test Description | 0          | https://placehold.co/600x400 | 400    | "Could not find any entity of type"                                      |
       | Test Title 10 | 10      | Test Description | 1          |                              | 400    | ["each value in images must be a URL address" ]                          |
       | Test Title 10 | 10      | Test Description | 1          | ["10asdfas#$"]               | 400    | ["each value in images must be a URL address" ]                          |
+
+  @update @products @positive @smoke
+  Scenario: PUT https://api.escuelajs.co/api/v1/products/<id> successfully updates a product
+    * def createProduct = call read('classpath:utils/create-product-helper.feature')
+    * print "Create Product: ", createProduct
+    * def productId = createProduct.response.id
+    * def updateProduct = read("classpath:requests/update-product.json").updateProduct
+    * def uuid = java.util.UUID.randomUUID() + ''
+    * set updateProduct.title = 'Change title ' + uuid
+
+    Given path 'api/v1/products', productId
+    And request updateProduct
+    When method put
+    Then status 200
+    And match response.title == updateProduct.title
+    And match response.price == updateProduct.price
+    And match response.description == updateProduct.description
+    And match response.images == updateProduct.images
+
+
 
 
 
